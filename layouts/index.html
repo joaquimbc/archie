@@ -6,27 +6,27 @@
 			{{ partial "head.html" . }}
 
 			<main class="list">
-				{{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
-				{{ $filtered := where $pages "Params.hidden" "ne" true }}
-				{{ range $filtered.GroupByDate "2006" }}
-				<section class="year-group">
-					<h2 class="year-heading">{{ .Key }}</h2>
-					{{ range .Pages.GroupByDate "January" }}
-					<div class="month-group">
-						<h3 class="month-heading">{{ .Key }}</h3>
-						{{ range .Pages }}
-						<article class="list-item">
-							<time>{{ dateFormat "Jan 2" .Date }}</time>
-							<div class="list-item-content">
-								<a href="{{ .RelPermalink }}" class="list-title">{{.Title}}{{ if .Draft }} <span class="draft-label">DRAFT</span>{{ end }}</a>
-								<p class="list-description">{{ with .Description }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 140 }}{{ end }}</p>
-							</div>
-						</article>
-						{{ end }}
-					</div>
+				<div class="post-list">
+					{{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+					{{ $paginator := .Paginate (where $pages "Params.hidden" "ne" true) }}
+					{{ range $paginator.Pages }}
+					<article class="post-item">
+						<time class="post-date">{{ dateFormat "Jan 2, 2006" .Date }}{{ if .Draft }} <span class="draft-label">DRAFT</span>{{ end }}</time>
+						<div class="post-info">
+							<h2 class="post-title"><a href="{{ .RelPermalink }}">{{.Title}}</a></h2>
+							<p class="post-summary">{{ with .Description }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}</p>
+							{{ with .Params.tags }}
+							<ul class="post-tags-list">
+								{{ range . }}
+								<li><a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}/">{{ . }}</a></li>
+								{{ end }}
+							</ul>
+							{{ end }}
+						</div>
+					</article>
 					{{ end }}
-				</section>
-				{{ end }}
+				</div>
+				{{ template "partials/paginator.html" . }}
 			</main>
 			{{ partial "footer.html" . }}
 		</div>

@@ -2,36 +2,29 @@
 :root {
   /* Light theme colors */
   --color-primary: #dc143c;
-  --color-primary-hover: #b91c3c;
   --color-border: #e0e0e0;
   --color-text: #232333;
-  --color-text-secondary: #555;
+  --color-text-bright: #111;
   --color-text-meta: #888;
   --color-background: #ffffff;
-  --color-background-code: #f5f5f5;
-  --color-background-pre: #f5f5f5;
-  --color-background-toc: #f5f5f5;
-  --color-background-draft: #f9f2f4;
+  --color-background-surface: #f5f5f5;
 
   /* Dark theme colors */
   --color-primary-dark: #50fa7b;
-  --color-primary-hover-dark: #3dd458;
-  --color-border-dark: rgba(255, 255, 255, 0.1);
-  --color-text-dark: rgba(255, 255, 255, 0.87);
-  --color-text-secondary-dark: rgba(255, 255, 255, 0.5);
-  --color-text-meta-dark: rgba(255, 255, 255, 0.4);
-  --color-background-dark: #202124;
-  --color-background-code-dark: rgba(255, 255, 255, 0.05);
-  --color-background-pre-dark: #1a1b1f;
-  --color-background-toc-dark: #1a1b1f;
-  --color-background-draft-dark: #0066ff;
+  --color-border-dark: #2d2d30;
+  --color-text-dark: #c9c9c9;
+  --color-text-bright-dark: #e0e0e0;
+  --color-text-meta-dark: #777;
+  --color-background-dark: #161618;
+  --color-background-surface-dark: #1e1e20;
 
-  /* Spacing and sizing */
-  --content-max-width: 800px;
-  --content-padding: 1.5rem;
-  --border-radius: 6px;
-  --font-size-base: 16px;
-  --line-height-base: 1.7;
+  /* Typography */
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-serif: 'Lora', 'Georgia', serif;
+
+  /* Spacing */
+  --content-max-width: 860px;
+  --content-padding: 2rem;
 }
 
 /* ---- Reset ---- */
@@ -42,9 +35,9 @@
 }
 
 html {
-  font-family: 'Lora', Georgia, 'Times New Roman', serif;
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-base);
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  line-height: 1.7;
   color: var(--color-text);
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
@@ -74,15 +67,15 @@ body {
 
 /* ---- Typography ---- */
 p {
-  margin: 0 0 1.25em;
-  line-height: 1.7;
+  margin: 0 0 1.2em;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--color-text-bright);
   line-height: 1.3;
-  margin: 2em 0 0.75em;
+  margin: 2.5rem 0 1rem;
 }
 
 h1 { font-size: 1.6rem; }
@@ -90,23 +83,19 @@ h2 { font-size: 1.35rem; }
 h3 { font-size: 1.15rem; }
 h4, h5, h6 { font-size: 1rem; }
 
-h1::before,
-h2::before,
-h3::before,
-h4::before,
-h5::before,
-h6::before {
-  color: var(--color-primary);
-  font-weight: 400;
-  margin-right: 0.4em;
-}
+h1::before { content: '# '; color: var(--color-primary); opacity: 0.9; }
+h2::before { content: '## '; color: var(--color-primary); opacity: 0.9; }
+h3::before { content: '### '; color: var(--color-primary); opacity: 0.9; }
+h4::before { content: '#### '; color: var(--color-primary); opacity: 0.9; }
 
-h1::before { content: '#'; }
-h2::before { content: '##'; }
-h3::before { content: '###'; }
-h4::before { content: '####'; }
-h5::before { content: '#####'; }
-h6::before { content: '######'; }
+/* Smaller, lighter prefixes inside post body */
+.body h1::before,
+.body h2::before,
+.body h3::before,
+.body h4::before {
+  font-size: 0.7em;
+  font-weight: 400;
+}
 
 hr {
   border: 0;
@@ -118,7 +107,7 @@ blockquote {
   border-left: 3px solid var(--color-primary);
   padding-left: 1.25em;
   margin: 1.5em 0;
-  color: var(--color-text-secondary);
+  color: var(--color-text-meta);
   font-style: italic;
 }
 
@@ -128,17 +117,15 @@ blockquote p:last-child {
 
 /* ---- Links ---- */
 a {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-color: var(--color-primary);
-  text-underline-offset: 2px;
-  text-decoration-thickness: 1.5px;
-  transition: color 0.15s ease;
+  color: var(--color-text-bright);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-border);
+  transition: color 0.2s, border-color 0.2s;
 }
 
-a:hover,
-a:focus {
+a:hover {
   color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
 }
 
 a:focus-visible {
@@ -147,42 +134,41 @@ a:focus-visible {
 }
 
 /* ---- Lists ---- */
-ul, ol {
-  padding-left: 1.5em;
-  margin: 0.75em 0 1.25em;
-}
-
 ul {
   list-style: none;
+  padding-left: 0;
+  margin: 0.75em 0 1.5em;
 }
 
 ul > li {
+  padding-left: 1.5em;
+  margin-bottom: 0.5em;
   position: relative;
 }
 
 ul > li::before {
   content: '>';
   position: absolute;
-  left: -1.5em;
+  left: 0;
   color: var(--color-primary);
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 0.9em;
 }
 
 ol {
-  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin: 0.75em 0 1.5em;
 }
 
 li {
-  margin-bottom: 0.35em;
+  margin-bottom: 0.5em;
 }
 
 /* ---- Images ---- */
 img {
   max-width: 100%;
   height: auto;
-  border-radius: var(--border-radius);
+  border-radius: 6px;
 }
 
 figure {
@@ -199,53 +185,48 @@ figure h4 {
   font-weight: 400;
   color: var(--color-text-meta);
   margin: 0.5em 0 0;
-  border-bottom: none;
 }
 
 figure h4::before {
-  content: '\2014\00a0';
-  color: var(--color-text-meta);
+  content: none;
 }
 
 /* ---- Code ---- */
 code, kbd {
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-size: 0.875em;
-  background-color: var(--color-background-code);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background-color: var(--color-background-surface);
   padding: 0.15em 0.4em;
   border-radius: 3px;
 }
 
 pre {
-  background-color: var(--color-background-pre);
-  line-height: 1.5;
+  background-color: var(--color-background-surface);
+  padding: 1.5rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
   overflow-x: auto;
-  padding: 1.5em;
-  border: none;
-  border-radius: 0;
-  margin: 1.5em 0;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 2rem 0;
 }
 
 pre code {
   background-color: transparent;
   color: inherit;
-  font-size: 0.85rem;
   padding: 0;
   border-radius: 0;
+  font-size: inherit;
 }
 
 .highlight {
   position: relative;
-  border-radius: 0;
   overflow: hidden;
-  margin: 2em 0;
-  border-top: 1px dashed var(--color-border);
-  border-left: 1px dashed var(--color-border);
 }
 
 .highlight pre {
   margin: 0;
-  border-radius: 0;
 }
 
 .highlight pre ::selection {
@@ -258,48 +239,50 @@ pre code {
   max-width: var(--content-max-width);
   margin: 0 auto;
   padding: 0 var(--content-padding);
-  margin-bottom: 4em;
+  padding-bottom: 6rem;
 }
 
 /* ---- Header ---- */
 header {
+  padding: 2rem 0 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 0;
-  margin-bottom: 1rem;
-  border-bottom: 1px dotted var(--color-border);
+  font-family: var(--font-mono);
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  border-bottom: 1px dashed var(--color-border);
+  margin-bottom: 2rem;
 }
 
 header .main {
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 700;
 }
 
 header .main a {
+  color: var(--color-text-bright);
   text-decoration: none;
-  padding-bottom: 2px;
-  border-bottom: 2px solid var(--color-primary);
+  border-bottom: none;
 }
 
-header .main a::after {
-  content: '_';
-  animation: blink 1.2s step-end infinite;
+header .main a:hover {
+  color: inherit;
+}
+
+header .main .cursor {
+  color: var(--color-primary);
+  animation: blink 1s step-end infinite;
 }
 
 @keyframes blink {
   50% { opacity: 0; }
 }
 
-header .main a:hover {
-  color: var(--color-primary);
-}
-
 .subtitle {
-  font-family: 'Lora', Georgia, serif;
+  font-family: var(--font-serif);
   font-size: 0.85rem;
-  color: var(--color-text-secondary);
+  color: var(--color-text-meta);
   margin: 0.3em 0 0;
   font-style: italic;
 }
@@ -312,33 +295,32 @@ nav {
 }
 
 nav a {
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--color-text);
   text-decoration: none;
-  letter-spacing: 0.03em;
-  color: var(--color-text-secondary);
-  transition: color 0.15s ease;
-  padding-bottom: 2px;
-  border-bottom: 2px solid var(--color-primary);
+  border-bottom: none;
+  transition: color 0.2s;
 }
 
-nav a:hover,
-nav a:focus {
+nav a:hover {
   color: var(--color-primary);
 }
 
 /* ---- Post metadata ---- */
 .meta {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
   color: var(--color-text-meta);
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-size: 0.8rem;
-  letter-spacing: 0.02em;
+  display: block;
+  margin-bottom: 1rem;
 }
 
 time {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
   color: var(--color-text-meta);
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-size: 0.8rem;
 }
 
 /* ---- Post single ---- */
@@ -353,16 +335,12 @@ time {
 
 .title h1 {
   font-size: 1.8rem;
-  margin-bottom: 0.15em;
-  margin-top: 0;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 
 .title h1::before {
   display: none;
-}
-
-.title .meta {
-  margin-bottom: 1.5em;
 }
 
 article .title {
@@ -371,12 +349,14 @@ article .title {
 
 /* Post description shown under the title */
 .post-description {
-  border-left: 3px solid var(--color-primary);
-  padding: 0.6em 1em;
-  margin-bottom: 2em;
+  font-size: 1.05rem;
+  color: var(--color-text-bright);
+  background-color: rgba(0, 0, 0, 0.03);
   font-style: italic;
-  color: var(--color-text-secondary);
-  font-size: 0.9rem;
+  border-left: 3px solid var(--color-primary);
+  padding: 1rem 1.5rem;
+  border-radius: 0 4px 4px 0;
+  margin-bottom: 2.5rem;
 }
 
 .post-description p {
@@ -384,74 +364,112 @@ article .title {
 }
 
 /* ---- Post listing ---- */
-.year-group {
-  margin-bottom: 2em;
-}
-
-.year-heading {
-  font-size: 1.4rem;
-  margin: 1.5em 0 0.5em;
-  color: var(--color-text-secondary);
-}
-
-.year-heading::before {
-  content: none;
-}
-
-.month-heading {
-  font-size: 0.85rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-text-meta);
-  margin: 1.5em 0 0.5em;
-}
-
-.month-heading::before {
-  content: none;
-}
-
-.list-item {
+.post-list {
   display: flex;
-  gap: 1.5em;
-  padding: 0.75em 0;
+  flex-direction: column;
+  gap: 2.5rem;
 }
 
-.list-item time {
+.post-item {
+  display: flex;
+  gap: 2rem;
+  align-items: baseline;
+}
+
+.post-date {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-text-meta);
   flex-shrink: 0;
-  min-width: 4.5em;
-  padding-top: 0.15em;
+  width: 110px;
 }
 
-.list-item-content {
-  flex: 1;
+.post-info {
+  flex-grow: 1;
   min-width: 0;
 }
 
-.list-title {
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-size: 1rem;
-  font-weight: 600;
-  text-decoration: none;
-  display: block;
-  margin-bottom: 0.3em;
+.post-title {
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: var(--color-text-bright);
 }
 
-.list-title:hover {
+.post-title::before {
+  content: '# ';
+  color: var(--color-primary);
+  opacity: 0.9;
+}
+
+.post-title a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: none;
+  transition: color 0.2s;
+}
+
+.post-title a:hover {
   color: var(--color-primary);
 }
 
-.list-description {
-  color: var(--color-text-secondary);
-  font-size: 0.9rem;
+.post-summary {
+  margin: 0 0 0.8rem;
+  font-size: 1rem;
+  color: var(--color-text-meta);
+}
+
+.post-tags-list {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
   margin: 0;
-  line-height: 1.5;
+}
+
+.post-tags-list li {
+  padding: 0;
+  margin: 0;
+}
+
+.post-tags-list li::before {
+  content: none;
+}
+
+.post-tags-list a {
+  color: var(--color-text-meta);
+  border-bottom: none;
+  transition: color 0.2s;
+}
+
+.post-tags-list a::before {
+  content: '#';
+  color: var(--color-primary);
+  opacity: 0.7;
+  margin-right: 0.1rem;
+}
+
+.post-tags-list a:hover {
+  color: var(--color-primary);
+}
+
+@media (max-width: 600px) {
+  .post-item {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .post-date {
+    width: auto;
+  }
 }
 
 /* ---- TOC ---- */
 .toc {
-  background-color: var(--color-background-toc);
-  border-radius: var(--border-radius);
+  background-color: var(--color-background-surface);
+  border-radius: 6px;
   color: var(--color-text);
   max-width: 100%;
   padding: 1rem;
@@ -475,12 +493,12 @@ footer {
   display: flex;
   align-items: center;
   text-decoration: none;
+  border-bottom: none;
   color: var(--color-text-meta);
-  transition: color 0.15s ease;
+  transition: color 0.2s;
 }
 
-.soc:hover,
-.soc:focus {
+.soc:hover {
   color: var(--color-primary);
 }
 
@@ -490,19 +508,19 @@ footer {
 }
 
 .footer-info {
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--color-text-meta);
 }
 
 .footer-info a {
   color: var(--color-text-meta);
-  text-decoration-color: var(--color-border);
+  border-bottom-color: var(--color-border);
 }
 
 .footer-info a:hover {
   color: var(--color-primary);
-  text-decoration-color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
 }
 
 /* ---- Tags ---- */
@@ -515,16 +533,21 @@ footer {
   margin: 1.5em 0;
 }
 
+.tags li {
+  padding-left: 0;
+}
+
 .tags li::before {
   content: none;
 }
 
 .tags a {
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: var(--font-mono);
   font-size: 0.8rem;
   padding: 0.2em 0.6em;
   border-radius: 3px;
   text-decoration: none;
+  border-bottom: none;
   color: var(--color-primary);
   background: rgba(80, 250, 123, 0.08);
   transition: all 0.15s ease;
@@ -566,7 +589,7 @@ table {
 table th {
   padding: 0.6rem 0.75rem;
   border-bottom: 2px solid var(--color-border);
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: var(--font-mono);
   font-size: 0.8rem;
   font-weight: 600;
   text-align: left;
@@ -584,13 +607,13 @@ table td {
   background-color: rgba(30, 144, 255, 0.1);
   color: inherit;
   padding: 1em 1.25em;
-  border-radius: var(--border-radius);
+  border-radius: 6px;
   border-left: 3px solid #1e90ff;
   margin: 1.5em 0;
 }
 
 .callout p {
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: var(--font-mono);
   font-size: 0.9rem;
   margin: 0;
 }
@@ -619,7 +642,7 @@ table td {
 
 /* ---- Draft label ---- */
 .draft-label {
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: var(--font-mono);
   font-size: 0.7rem;
   font-weight: 700;
   color: #fff;
@@ -644,24 +667,23 @@ table td {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-secondary);
-  transition: color 0.15s ease;
+  color: var(--color-text-meta);
+  transition: color 0.2s;
 }
 
-.nav-toggle:hover,
-.nav-toggle:focus {
+.nav-toggle:hover {
   color: var(--color-primary);
 }
 
 /* ---- Pagination ---- */
 .pagination {
   margin-top: 3em;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: var(--font-mono);
   font-size: 0.85rem;
 }
 
 .pagination a {
-  text-decoration: none;
+  border-bottom: none;
 }
 
 /* ---- Responsive ---- */
@@ -671,19 +693,14 @@ table td {
   }
 
   header {
-    padding: 1.25rem 0;
+    padding: 1.5rem 0 1rem;
   }
 
   nav {
     gap: 1rem;
   }
 
-  .title h1 {
-    font-size: 1.4rem;
-  }
-
-  h1 { font-size: 1.35rem; }
-  h2 { font-size: 1.2rem; }
+  .title h1 { font-size: 1.4rem; }
 }
 
 /* ---- Utilities ---- */
@@ -693,7 +710,7 @@ table td {
 
 /* ---- Syntax Highlighting (Chroma classes) ---- */
 .chroma {
-  color: #e2e4e8;
+  color: #d1d5db;
 }
 
 /* Keywords */
@@ -703,29 +720,29 @@ table td {
 .chroma .kn,
 .chroma .kp,
 .chroma .kr {
-  color: #50fa7b;
+  color: #ff79c6;
 }
 
 /* Keyword type (int, char, void...) */
 .chroma .kt {
-  color: #8be9fd;
+  color: #ff79c6;
 }
 
 /* Names / identifiers */
 .chroma .n,
 .chroma .na,
 .chroma .nb,
-.chroma .nc,
 .chroma .ni,
 .chroma .nl,
 .chroma .nn,
 .chroma .nx {
-  color: #e2e4e8;
+  color: #d1d5db;
 }
 
-/* Function names */
-.chroma .nf {
-  color: #8be9fd;
+/* Function names and class names */
+.chroma .nf,
+.chroma .nc {
+  color: #50fa7b;
 }
 
 /* Strings */
@@ -751,13 +768,13 @@ table td {
 .chroma .mo,
 .chroma .mb,
 .chroma .il {
-  color: #bd93f9;
+  color: #50fa7b;
 }
 
 /* Operators */
 .chroma .o,
 .chroma .ow {
-  color: #ff79c6;
+  color: #d1d5db;
 }
 
 /* Comments */
@@ -766,19 +783,24 @@ table td {
 .chroma .cm,
 .chroma .cs,
 .chroma .ch {
-  color: rgba(255, 255, 255, 0.3);
+  color: #6272a4;
   font-style: italic;
 }
 
 /* Preprocessor */
 .chroma .cp,
 .chroma .cpf {
-  color: rgba(80, 250, 123, 0.6);
+  color: #6272a4;
 }
 
 /* Punctuation */
 .chroma .p {
-  color: rgba(255, 255, 255, 0.6);
+  color: #d1d5db;
+}
+
+/* Decorators / annotations */
+.chroma .nd {
+  color: #8be9fd;
 }
 
 /* Generic (diff, etc) */
