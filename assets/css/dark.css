@@ -27,7 +27,6 @@ code {
 
 pre {
   background-color: var(--color-background-pre-dark, #272822);
-  border-color: var(--color-border-dark, #0066ff);
 }
 
 blockquote {
@@ -96,8 +95,7 @@ a:focus {
   text-decoration: none !important;
 }
 
-.header nav,
-footer {
+.header nav {
   border-color: var(--color-border-dark, #0066ff);
 }
 
