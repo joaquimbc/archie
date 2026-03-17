@@ -4,27 +4,32 @@
 	<body>
 		<div class="content">
 			{{ partial "head.html" . }}
-			
+
 			<main class="list">
-				<div class="site-description">
-					{{- if isset .Site.Params "subtitle" -}}
-					<p>{{ .Site.Params.Subtitle | .Page.RenderString }}</p>
-					{{- end -}}
-				</div>
 				{{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
-				{{ $paginator := .Paginate (where $pages "Params.hidden" "ne" true) }}
-				{{ range $paginator.Pages }}
-				<section class="list-item">
-					<h1 class="title"><a href="{{ .RelPermalink }}">{{.Title}}</a></h1>
-					<time>{{ dateFormat ":date_medium" .Date }}{{ if .Draft }} <span class="draft-label">DRAFT</span> {{ end }}</time>
-					<br>{{ template "partials/pagedescription.html" . }}
-					<a class="readmore" href="{{ .RelPermalink }}">Read more ⟶</a>
+				{{ $filtered := where $pages "Params.hidden" "ne" true }}
+				{{ range $filtered.GroupByDate "2006" }}
+				<section class="year-group">
+					<h2 class="year-heading">{{ .Key }}</h2>
+					{{ range .Pages.GroupByDate "January" }}
+					<div class="month-group">
+						<h3 class="month-heading">{{ .Key }}</h3>
+						{{ range .Pages }}
+						<article class="list-item">
+							<time>{{ dateFormat "Jan 2" .Date }}</time>
+							<div class="list-item-content">
+								<a href="{{ .RelPermalink }}" class="list-title">{{.Title}}{{ if .Draft }} <span class="draft-label">DRAFT</span>{{ end }}</a>
+								<p class="list-description">{{ with .Description }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 140 }}{{ end }}</p>
+							</div>
+						</article>
+						{{ end }}
+					</div>
+					{{ end }}
 				</section>
 				{{ end }}
-				{{ template "partials/paginator.html" . }}
 			</main>
 			{{ partial "footer.html" . }}
 		</div>
-		
+
 	</body>
 </html>

@@ -35,6 +35,9 @@
 <header>
 	<div class="main">
 		<a href="{{ absLangURL "/" }}">{{ .Site.Title }}</a>
+		{{ with .Site.Params.subtitle }}
+		<p class="subtitle">{{ . }}</p>
+		{{ end }}
 	</div>
 	<nav>
 		{{ range .Site.Menus.main }}
